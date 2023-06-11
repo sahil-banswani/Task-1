@@ -23,11 +23,15 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isSecure = true;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  final name = TextEditingController();
+  final mobNo = TextEditingController();
   final passwordController = TextEditingController();
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    mobNo.dispose();
+    name.dispose();
     super.dispose();
   }
 
@@ -89,7 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
       // ),
       body: Container(
         padding:
-            const EdgeInsets.only(top: 150), // Adjust the top padding as needed
+            const EdgeInsets.only(top: 30), // Adjust the top padding as needed
         child: SingleChildScrollView(
           child: Column(
             //resizeToAvoidBottomPadding: false,
@@ -106,70 +110,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
-                      width: size.width * 0.8,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(29),
-                      ),
-                      child: TextFormField(
-                        key: const ValueKey('email'),
-                        controller: emailController,
-                        validator: (val) {
-                          if (val == null || val.isEmpty) {
-                            return 'Please Enter your Email';
-                          } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@gmail\.com$')
-                              .hasMatch(val)) {
-                            return 'Please enter a valid email address';
-                          }
-                          //return null;
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          icon: Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                          ),
-                          hintText: "Your Email",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 5),
-                      width: size.width * 0.8,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(29),
-                      ),
-                      child: TextFormField(
-                        key: const ValueKey('Password'),
-                        controller: passwordController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter Your Password';
-                          } else if (value.length < 6) {
-                            return 'Password should be of 6 characters';
-                          }
-                          return null;
-                        },
-                        obscureText: isSecure,
-                        decoration: InputDecoration(
-                          icon: const Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          ),
-                          hintText: "Your Password",
-                          border: InputBorder.none,
-                          suffixIcon: tooglePassword(),
-                        ),
-                      ),
-                    ),
+                    TextFieldOr('Name'),
+                    TextFieldOr('Email'),
+                    TextFieldOr('Mobile No.'),
+                    TextFieldOr('Enter Password'),
+                    TextFieldOr('Confirm Password'),
+                    
                   ],
                 ),
               ),
@@ -235,6 +181,39 @@ class _SignupScreenState extends State<SignupScreen> {
           ? const Icon(Icons.visibility_off_rounded)
           : const Icon(Icons.visibility_rounded),
       color: Colors.lightBlueAccent,
+    );
+  }
+
+  Widget TextFieldOr(String text) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      width: MediaQuery.of(context).size.width * 0.8,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(29),
+      ),
+      child: TextFormField(
+        key: ValueKey(text.toString()),
+        controller: emailController,
+        validator: (val) {
+          if (val == null || val.isEmpty) {
+            return 'Please Enter your $text';
+          } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@gmail\.com$').hasMatch(val)) {
+            return 'Please enter a valid $text';
+          }
+          //return null;
+          return null;
+        },
+        decoration: InputDecoration(
+          icon: const Icon(
+            Icons.person,
+            color: Colors.grey,
+          ),
+          hintText: "Your $text",
+          border: InputBorder.none,
+        ),
+      ),
     );
   }
 }

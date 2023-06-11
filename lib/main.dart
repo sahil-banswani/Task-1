@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:life_coach/screens/login_screen.dart';
+import 'package:life_coach/screens/sign_up_screen.dart';
 import 'package:life_coach/widgets/drawer.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: DrawerWidget(),
+      home: LoginScreen(),
     );
   }
 }
