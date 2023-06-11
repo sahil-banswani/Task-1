@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:life_coach/screens/dash.dart';
 import 'package:life_coach/screens/payment_screen.dart';
 import 'package:life_coach/widgets/textForm.dart';
 // import 'package:nodejs/components/rounded_button.dart';
@@ -29,6 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final name = TextEditingController();
   final mobNo = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPassController = TextEditingController();
 
   List<String> items = ['CRM', 'SRM', 'Entrepreneur'];
   String dropdownValue = 'CRM';
@@ -122,6 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     icon: const Icon(
                       Icons.person,
                     ),
+                    obscure: false,
                   ),
                   EnterText(
                     controller: emailController,
@@ -129,13 +129,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     icon: const Icon(
                       Icons.email,
                     ),
+                    obscure: false,
                   ),
                   EnterText(
-                    controller: passwordController,
+                    controller: mobNo,
                     text: 'Mobile No.',
                     icon: const Icon(
                       Icons.mobile_friendly,
                     ),
+                    obscure: false,
                   ),
                   EnterText(
                     controller: passwordController,
@@ -143,13 +145,15 @@ class _SignupScreenState extends State<SignupScreen> {
                     icon: const Icon(
                       Icons.password,
                     ),
+                    obscure: true,
                   ),
                   EnterText(
-                    controller: passwordController,
+                    controller: confirmPassController,
                     text: 'Password',
                     icon: const Icon(
                       Icons.password_rounded,
                     ),
+                    obscure: true,
                   ),
                   const SizedBox(
                     height: 10,
