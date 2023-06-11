@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:life_coach/screens/dash.dart';
+import 'package:life_coach/screens/payment_screen.dart';
+import 'package:life_coach/widgets/textForm.dart';
 // import 'package:nodejs/components/rounded_button.dart';
-import 'package:http/http.dart' as http;
 
 import '../widgets/rounded_button.dart';
 import 'login_screen.dart';
@@ -26,6 +29,10 @@ class _SignupScreenState extends State<SignupScreen> {
   final name = TextEditingController();
   final mobNo = TextEditingController();
   final passwordController = TextEditingController();
+
+  List<String> items = ['CRM', 'SRM', 'Entrepreneur'];
+  String dropdownValue = 'CRM';
+
   @override
   void dispose() {
     emailController.dispose();
@@ -108,22 +115,75 @@ class _SignupScreenState extends State<SignupScreen> {
               SizedBox(height: size.height * 0.03),
               Form(
                 key: _formKey,
-                child: Column(
-                  children: [
-                    TextFieldOr('Name'),
-                    TextFieldOr('Email'),
-                    TextFieldOr('Mobile No.'),
-                    TextFieldOr('Enter Password'),
-                    TextFieldOr('Confirm Password'),
-                    
-                  ],
-                ),
+                child: Column(children: [
+                  EnterText(
+                    controller: name,
+                    text: 'Name',
+                    icon: const Icon(
+                      Icons.person,
+                    ),
+                  ),
+                  EnterText(
+                    controller: emailController,
+                    text: 'Email',
+                    icon: const Icon(
+                      Icons.email,
+                    ),
+                  ),
+                  EnterText(
+                    controller: passwordController,
+                    text: 'Mobile No.',
+                    icon: const Icon(
+                      Icons.mobile_friendly,
+                    ),
+                  ),
+                  EnterText(
+                    controller: passwordController,
+                    text: 'Password',
+                    icon: const Icon(
+                      Icons.password,
+                    ),
+                  ),
+                  EnterText(
+                    controller: passwordController,
+                    text: 'Password',
+                    icon: const Icon(
+                      Icons.password_rounded,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  DropdownButton(
+                      value: dropdownValue,
+                      elevation: 5,
+                      iconSize: 30,
+                      alignment: Alignment.centerLeft,
+                      focusColor: Colors.black54,
+                      items:
+                          items.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue ?? '';
+                        });
+                      })
+                ]),
               ),
               RoundedButton(
-                text: "Signup",
+                text: "Payment",
                 press: () async {
                   setState(() {
                     loading = true;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PaymentScreen(),
+                      ),
+                    );
                   });
                   if (_formKey.currentState!.validate()) {
                     await signup();
@@ -181,39 +241,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ? const Icon(Icons.visibility_off_rounded)
           : const Icon(Icons.visibility_rounded),
       color: Colors.lightBlueAccent,
-    );
-  }
-
-  Widget TextFieldOr(String text) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      width: MediaQuery.of(context).size.width * 0.8,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(29),
-      ),
-      child: TextFormField(
-        key: ValueKey(text.toString()),
-        controller: emailController,
-        validator: (val) {
-          if (val == null || val.isEmpty) {
-            return 'Please Enter your $text';
-          } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@gmail\.com$').hasMatch(val)) {
-            return 'Please enter a valid $text';
-          }
-          //return null;
-          return null;
-        },
-        decoration: InputDecoration(
-          icon: const Icon(
-            Icons.person,
-            color: Colors.grey,
-          ),
-          hintText: "Your $text",
-          border: InputBorder.none,
-        ),
-      ),
     );
   }
 }
